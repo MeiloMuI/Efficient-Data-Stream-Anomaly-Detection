@@ -1,0 +1,39 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+env/
+venv/
+*.env
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# macOS system files
+.DS_Store
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Logs
+*.log
+
+# Python distribution files
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment variables
+.env
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Other files
+*.pyo
