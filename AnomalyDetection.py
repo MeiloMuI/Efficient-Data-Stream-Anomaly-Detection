@@ -2,7 +2,7 @@ import random
 import math
 from collections import deque
 
-# Parameters for data stream simulationß
+# Parameters for data stream simulation
 stream_length = 700
 
 # Simulate the data stream with seasonality, trend, noise, and anomalies
@@ -19,3 +19,14 @@ def generate_data_stream():
             value += random.choice([30, -30])
         stream.append(value)
     return stream
+
+# Exponential Moving Average (EMA)
+def calculate_ema(current_val, prev_ema, alpha):
+    return alpha * current_value + (1 - alpha) * prev_ema
+
+# Z-score
+def calculate_z_score(value, mean, std_dev):
+    if std_dev == 0:
+        return 0
+    return (value - mean) / std_dev
+
