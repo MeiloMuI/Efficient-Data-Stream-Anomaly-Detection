@@ -54,3 +54,31 @@ def detect_anomalies(data_stream, window_size, alpha, threshold):
             anomalies.append((i, value))
 
         yield value, ema, rolling_mean, rolling_std, anomalies
+
+# Simple text-based visualization function
+def visualize_data_stream(data_stream, anomalies):
+    print("Data Stream (with anomalies marked):")
+    for i, value in enumerate(data_stream):
+        if any(a[0] == i for a in anomalies):
+            print(f"Time {i}: {value} (ANOMALY)")
+        else:
+            print(f"Time {i}: {value}")
+
+# Main function
+def main():
+    # Generate the data stream
+    data_stream = generate_data_stream()
+
+    # Detection of anomalies
+    anomalies = []
+    detected_anomalies = detected_anomalies(data_stream, window_size, alpha, threshold)
+
+    # Collect anomalies for visualization
+    for value, ema, rolling_mean, rolling_std, new_anomalies in detected_anomalies:
+        anomalies = new_anomalies
+    
+    # Visualize the result
+    visualize_data_stream(data_stream, anomalies)
+
+if __name__ == '__main__':
+    main()
