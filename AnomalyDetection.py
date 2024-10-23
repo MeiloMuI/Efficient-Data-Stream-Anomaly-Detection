@@ -33,6 +33,16 @@ def calculate_z_score(value, mean, std_dev):
         return 0
     return (value - mean) / std_dev
 
+# Calculate mean and stand deviation of a window
+def calculate_mean_std(window):
+    n = len(window)
+    if n == 0:
+        return 0, 0
+    mean = sum(window) / n
+    variance = sum((x - mean) ** 2 for x in window) / n
+    std_dev = math.sqrt(variance)
+    return mean, std_dev
+
 # Real-time anomaly detection
 def detect_anomalies(data_stream, window_size, alpha, threshold):
     rolling_window = deque(maxlen=window_size)
