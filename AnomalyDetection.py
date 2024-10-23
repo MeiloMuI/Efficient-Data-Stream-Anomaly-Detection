@@ -81,7 +81,7 @@ def main():
 
     # Detection of anomalies
     anomalies = []
-    detected_anomalies = detected_anomalies(data_stream, window_size, alpha, threshold)
+    detected_anomalies = detect_anomalies(data_stream, window_size, alpha, threshold)
 
     # Collect anomalies for visualization
     for value, ema, rolling_mean, rolling_std, new_anomalies in detected_anomalies:
