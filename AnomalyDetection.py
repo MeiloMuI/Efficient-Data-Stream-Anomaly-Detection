@@ -33,13 +33,22 @@ def calculate_z_score(value, mean, std_dev):
         return 0
     return (value - mean) / std_dev
 
+# Calculate mean and stand deviation of a window
+def calculate_mean_std(window):
+    n = len(window)
+    if n == 0:
+        return 0, 0
+    mean = sum(window) / n
+    variance = sum((x - mean) ** 2 for x in window) / n
+    std_dev = math.sqrt(variance)
+    return mean, std_dev
+
 # Real-time anomaly detection
 def detect_anomalies(data_stream, window_size, alpha, threshold):
     rolling_window = deque(maxlen=window_size)
-    anomalies = []
     ema = data_stream[0] # Initialize EMA with the first data point
 
-    for i, value in enumerate(data_stream):
+    for index, value in enumerate(data_stream):
         rolling_window.append(value)
 
         # Get rolling mean and std_dev
@@ -49,8 +58,37 @@ def detect_anomalies(data_stream, window_size, alpha, threshold):
         # Get Z-score for anomaly detection
         z_score = calculate_z_score(value, rolling_mean, rolling_std)
 
+        new_anomalies = []
         # Flag as anomaly if Z-score exceeds threshold
         if abs(z_score) > threshold:
-            anomalies.append((i, value))
+            new_anomalies.append((index, value))
 
-        yield value, ema, rolling_mean, rolling_std, anomalies
+        yield index, value, ema, rolling_mean, rolling_std, new_anomalies
+
+# Simple text-based visualization function
+def visualize_data_stream(index, value, is_anomaly):
+    if is_anomaly:
+        print(f"Time {index}: {value} (ANOMALY)")
+    else:
+        print(f"Time {index}: {value}")
+
+# Main function
+def main():
+    # Generate the data stream
+    data_stream = generate_data_stream()
+
+    # Detection of anomalies
+    anomalies = set()
+    detected_anomalies = detect_anomalies(data_stream, window_size, alpha, threshold)
+
+    # Collect anomalies for visualization and visualize the result
+    print("Data Stream (with anomalies marked):")
+    for index, value, ema, rolling_mean, rolling_std, new_anomalies in detected_anomalies:
+        if new_anomalies:
+            anomalies.update(new_anomalies)
+            visualize_data_stream(index, value, True)
+        else:
+            visualize_data_stream(index, value, False)
+
+if __name__ == '__main__':
+    main()
