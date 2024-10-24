@@ -4,7 +4,7 @@ from collections import deque
 
 # Parameters for data stream simulation
 stream_length = 700
-alpha = 0.1 # Smoothing factor for EMA, means that the current value has a lower influence on the EMA calculation.
+alpha = 0.1 # Smoothing factor for EMA, means that the current value has a lower influence on the EMA calculation. (Cannot adapt to sudden change)
 threshold = 3   # Z-score threshold for anomaly detection
 window_size = 50    # Size of rolling window for statistics
 
@@ -32,6 +32,8 @@ def calculate_ema(current_val, prev_ema, alpha):
 
 # Z-score
 # Z-score can effectively identify outliers in new data environments, especially when concept drift occurs.
+# The z-score can complement the Exponential Moving Average (EMA) in detecting anomalies, 
+# especially when the EMA is slow to adapt to sudden changes in data trends, such as outliers or shifts in the data distribution.
 def calculate_z_score(value, mean, std_dev):
     if std_dev == 0:
         return 0
