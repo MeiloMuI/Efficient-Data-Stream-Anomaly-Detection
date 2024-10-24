@@ -47,7 +47,7 @@ def calculate_mean_std(window):
     std_dev = math.sqrt(variance)
     return mean, std_dev
 
-# Real-time anomaly detection
+# Real-time anomaly detection (EMA and Z-score)
 def detect_anomalies(data_stream, window_size, alpha, threshold):
     rolling_window = deque(maxlen=window_size)
     ema = data_stream[0] # Initialize EMA with the first data point
@@ -92,6 +92,8 @@ def main():
 
     # Collect anomalies for visualization and visualize the result
     print("Data Stream (with anomalies marked):")
+    # Generators allow for "deferred computation" 
+    # You can obtain values gradually rather than calculating all results at once.
     for index, value, ema, rolling_mean, rolling_std, new_anomalies in detected_anomalies:
         if new_anomalies:
             anomalies.update(new_anomalies)
